@@ -1,0 +1,20 @@
+---
+:project:
+  :use_mocks: TRUE
+  :build_root: build
+  :test_file_prefix: test_
+  :default_tasks:
+    - test:all
+
+:paths:
+  :test:
+    - +:test/**
+  :source:
+    - +:src/**
+  :include:
+    - +:src/**
+
+:plugins:
+  :enabled:
+    - report_tests_pretty_stdout
+...
