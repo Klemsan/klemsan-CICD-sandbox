@@ -12,7 +12,7 @@ uint16_t modbus_crc16(const uint8_t *data, size_t len)
         crc ^= (uint16_t)data[i];
         for (int bit = 0; bit < 8; bit++) {
             if (crc & 0x0001) {
-                crc = (uint16_t)((crc >> 1) ^ 0xA001);
+                crc = (uint16_t)((crc >> 1) ^ 0xA002);
             } else {
                 crc >>= 1;
             }
