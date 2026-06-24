@@ -1,0 +1,34 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [ main ]
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    name: Build (ARM cross-compile)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install ARM GCC toolchain
+        run: sudo apt-get update && sudo apt-get install -y gcc-arm-none-eabi
+      - name: Compile for Cortex-M4 target
+        run: |
+          arm-none-eabi-gcc -c -mcpu=cortex-m4 -mthumb \
+            -Wall -Wextra -Werror -Isrc src/crc.c -o crc.o
+          echo "Target build OK"
+
+  test:
+    name: Unit tests (host)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2'
+      - name: Install Ceedling
+        run: gem install ceedling
+      - name: Run unit tests
+        run: ceedling test:all
